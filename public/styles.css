@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="theme-color" content="#08131d" />
+    <title>Paper Trade Stock Scanner</title>
+    <meta
+      name="description"
+      content="Paper Trade Stock Scanner — paper trading only dashboard for scanning US stocks with RSI, MACD, VWAP, and momentum filters."
+    />
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="topbar">
+        <div>
+          <p class="eyebrow">PAPER ONLY</p>
+          <h1>Paper Trade Stock Scanner</h1>
+        </div>
+        <div class="status-badge" aria-live="polite">
+          <span id="statusDot" class="status-dot status-off"></span>
+          <span id="statusText">Stopped</span>
+        </div>
+      </header>
+
+      <div class="safety-banner">
+        <strong>PAPER ONLY</strong>
+        <span>No real or live trading orders are allowed.</span>
+      </div>
+
+      <section class="control-bar">
+        <button id="startScannerBtn" class="primary" type="button">Start Scan</button>
+        <button id="stopScannerBtn" class="secondary" type="button">Stop</button>
+      </section>
+
+      <section class="summary-grid">
+        <article class="stat-card">
+          <span>Account Equity</span>
+          <strong id="accountEquity">$0.00</strong>
+        </article>
+        <article class="stat-card">
+          <span>Cash</span>
+          <strong id="accountCash">$0.00</strong>
+        </article>
+        <article class="stat-card">
+          <span>P&amp;L</span>
+          <strong id="accountPnl">$0.00</strong>
+        </article>
+        <article class="stat-card">
+          <span>Open Orders</span>
+          <strong id="openOrdersCount">0</strong>
+        </article>
+      </section>
+
+      <section class="panel scanner-panel">
+        <div class="panel-header">
+          <h2>US Stock Scanner</h2>
+          <div class="scan-meta">
+            <span class="live-indicator">Auto refresh</span>
+            <span id="lastScanText">Waiting for first scan</span>
+          </div>
+        </div>
+
+        <div class="filter-grid">
+          <label>
+            Price below
+            <input id="maxPriceInput" type="number" value="20" step="0.5" min="1" max="100" />
+          </label>
+          <label>
+            Volume above
+            <input id="minVolumeInput" type="number" value="5000000" step="100000" min="1000000" />
+          </label>
+          <label>
+            RVOL above
+            <input id="minRvolInput" type="number" value="2" step="0.1" min="0.5" />
+          </label>
+          <label>
+            RSI range
+            <input id="rsiRangeInput" type="text" value="50-70" />
+          </label>
+        </div>
+
+        <div class="summary-strip">
+          <div><span>Watchlist</span><strong id="watchlistCount">0</strong></div>
+          <div><span>Momentum</span><strong id="momentumCount">0</strong></div>
+          <div><span>Volume alerts</span><strong id="volumeAlertsCount">0</strong></div>
+        </div>
+      </section>
+
+      <section class="panel table-panel">
+        <div class="panel-header compact">
+          <h2>Qualifying Candidates</h2>
+        </div>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Symbol</th>
+                <th>Company</th>
+                <th>Price</th>
+                <th>Volume</th>
+                <th>RVOL</th>
+                <th>RSI</th>
+                <th>MACD</th>
+                <th>VWAP</th>
+                <th>Resistance</th>
+                <th>Entry</th>
+                <th>Stop</th>
+                <th>+20%</th>
+                <th>+50%</th>
+                <th>Score</th>
+              </tr>
+            </thead>
+            <tbody id="scannerTableBody"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="trade-grid">
+        <div class="panel">
+          <div class="panel-header compact">
+            <h2>Paper Trade</h2>
+          </div>
+
+          <form id="paperTradeForm" class="order-form">
+            <div class="form-row two-col">
+              <label>
+                Symbol
+                <input id="tradeSymbol" type="text" placeholder="AAPL" required />
+              </label>
+              <label>
+                Side
+                <select id="tradeSide">
+                  <option value="BUY">BUY</option>
+                  <option value="SELL">SELL</option>
+                </select>
+              </label>
+            </div>
+
+            <div class="form-row two-col">
+              <label>
+                Quantity
+                <input id="tradeQty" type="number" min="1" value="100" required />
+              </label>
+              <label>
+                Price
+                <input id="tradePrice" type="number" min="0.01" step="0.01" value="10.00" required />
+              </label>
+            </div>
+
+            <div class="form-row">
+              <button class="primary full-width" type="submit">Place Paper Order</button>
+            </div>
+          </form>
+        </div>
+
+        <div class="panel">
+          <div class="panel-header compact">
+            <h2>Open Orders</h2>
+          </div>
+          <div id="openOrdersList" class="mini-list"></div>
+        </div>
+      </section>
+
+      <section class="panel activity-panel">
+        <div class="panel-header compact">
+          <h2>Recent Activity</h2>
+        </div>
+        <div id="activityList" class="activity-list"></div>
+      </section>
+    </div>
+
+    <script src="/app.js"></script>
+  </body>
+</html>

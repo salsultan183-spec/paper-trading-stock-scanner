@@ -1,0 +1,21 @@
+class TradeZeroPaperAdapter {
+  constructor() {
+    this.name = 'tradezero-paper';
+    this.baseUrl = process.env.TRADEZERO_PAPER_API_BASE_URL || 'https://api.tradezero.co/paper';
+    this.apiKey = process.env.TRADEZERO_API_KEY || '';
+    this.apiSecret = process.env.TRADEZERO_API_SECRET || '';
+  }
+
+  async getPaperStatus() {
+    return {
+      paperOnly: true,
+      adapter: this.name,
+      baseUrl: this.baseUrl,
+      connected: false,
+      configured: Boolean(this.apiKey && this.apiSecret),
+      note: 'TradeZero paper API adapter is installed for future server-side integration. Live trading is intentionally blocked in this app.'
+    };
+  }
+}
+
+module.exports = { TradeZeroPaperAdapter };
