@@ -1,6 +1,10 @@
-.replit
 run = "python3 -m http.server 8000"
 language = "html"
+entrypoint = "index.html"
+
+[env]
+PYTHONUNBUFFERED = "1"
 
 [nix]
 channel = "stable-23_11"
+packages = ["python3"]
